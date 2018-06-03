@@ -20,8 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
+        android:textColor="#d8081d"
         android:layout_weight="1"
-        android:hint="Telefono o Usuario" />
+        android:hint="Telefono" />
 
     <EditText
         android:id="@+id/InPassword"
@@ -30,8 +31,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="textPassword" />
+        android:hint="Contraseña" />
+
+    <!--- android:inputType="textPassword" -->
+
 
     <Button
         android:id="@+id/btOk"
@@ -42,13 +45,12 @@
         android:text="Ingresar" />
 
     <Button
-        android:id="@+id/bt_inNew"
+        android:id="@+id/btinNew"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:text="¿Eres Nuevo?, Crea una cuenta!"
-        android:onClick="onClick"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#0E8AEE"/>
 

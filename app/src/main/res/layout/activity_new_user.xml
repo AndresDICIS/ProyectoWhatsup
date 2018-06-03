@@ -7,32 +7,30 @@
     android:orientation="vertical"
     tools:context=".NewUserActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:text="No te arrepentiras!"
-        android:textColor="#d8081d"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
     <EditText
-        android:id="@+id/inNew"
+        android:id="@+id/inNewname"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
-        android:hint="Telefono o Usuario" />
+        android:hint="Nombre" />
 
     <EditText
-        android:id="@+id/InPassRegis"
+        android:id="@+id/inNewphone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:hint="Telefono" />
+
+    <EditText
+        android:id="@+id/InPassregis"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="textPassword" />
+        android:hint="Contraseña" />
 
     <Button
         android:id="@+id/btRegister"

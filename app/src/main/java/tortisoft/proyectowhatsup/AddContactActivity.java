@@ -3,7 +3,6 @@ package tortisoft.proyectowhatsup;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,29 +12,26 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-public class NewUserActivity extends Activity {
+public class AddContactActivity extends Activity {
 
-    Button Register;
-    public String Confirm;
+    Button Add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_user);
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());
+        setContentView(R.layout.activity_add_contact);
 
-        Register = (Button) findViewById(R.id.btRegister);
-        Register.setOnClickListener(new View.OnClickListener() {
+        Add = (Button)findViewById(R.id.Add);
+        Add.setOnClickListener(new View.OnClickListener()
+        {
 
             @Override
             public void onClick(View view) {
-                EditText inNewname = (EditText)findViewById(R.id.inNewname);
-                EditText inNewphone = (EditText)findViewById(R.id.inNewphone);
-                EditText InPassregis = (EditText)findViewById(R.id.InPassregis);
-                SoapObject request = new SoapObject("http://www.ugto.com/Whatsup", "NewUser");
-                request.addProperty("name", inNewname.getText().toString());
-                request.addProperty("phone", inNewphone.getText().toString());
-                request.addProperty("password", InPassregis.getText().toString());
+                EditText inContact = (EditText)findViewById(R.id.inContact);
+                SoapObject request = new SoapObject("http://www.ugto.com/Whatsup", "AddContacto");
+                request.addProperty("phone", LoginActivity.Phone);
+                request.addProperty("Password", LoginActivity.Password);
+                request.addProperty("Contact_phone", inContact.getText().toString());
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
                 envelope.setOutputSoapObject(request);
                 envelope.dotNet = true;
@@ -44,20 +40,19 @@ public class NewUserActivity extends Activity {
                     HttpTransportSE httpTransport = new HttpTransportSE("http://192.168.0.4/WebService/WebService.dll");
                     httpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                     httpTransport.debug = true;
-                    httpTransport.call("NewUser", envelope);
+                    httpTransport.call("AddContacto", envelope);
                     SoapObject result = (SoapObject)envelope.bodyIn;
                     if(result != null)
                     {
-                        Intent Enter = new Intent(NewUserActivity.this, LoginActivity.class);
+                        Intent Enter = new Intent(AddContactActivity.this, MainActivity.class);
                         startActivity(Enter);
                     }
                 }
                 catch(Exception e)
                 {
-                    inNewname.setText(e.toString());
+                    inContact.setText(e.toString());
                 }
             }
-
         });
     }
 }
