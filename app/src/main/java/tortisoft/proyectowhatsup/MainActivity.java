@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ArrayAdapter;
+
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -22,6 +25,7 @@ public class MainActivity extends Activity {
     int nContacts;
     ListView lvContacts;
     public static String Prueba;
+    public static String ConId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,7 @@ public class MainActivity extends Activity {
         //-------------------------------------------------------------------Mostrar lista de contactos
         SoapObject request = new SoapObject("http://www.ugto.com/Whatsup", "ContactList");
         request.addProperty("phone", LoginActivity.Phone);
-        request.addProperty("password", LoginActivity.Password);
+        request.addProperty("Password", LoginActivity.Password);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
         envelope.setOutputSoapObject(request);
         envelope.dotNet = true;
@@ -43,12 +47,45 @@ public class MainActivity extends Activity {
             httpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             httpTransport.debug = true;
             httpTransport.call("ContactList", envelope);
-            SoapObject result = (SoapObject)envelope.getResponse();
+            SoapObject result = (SoapObject)envelope.bodyIn;
             if(result != null)
             {
-                Prueba = result.getProperty(0).toString();
-                Toast advertencia = Toast.makeText(getApplicationContext(),Prueba, Toast.LENGTH_SHORT );
-                advertencia.show();
+                final int A = result.getPropertyCount();
+                String[] Contacts = new String[A];
+                final String[] Ids = new String[A];
+                String[] phoneNumbers = new String[A];
+
+                int i;
+                for(i = 0; i < result.getPropertyCount(); i++)
+                {
+                    Prueba = result.getProperty(i).toString();
+                    Prueba = Prueba.substring(17, 18);
+                    Ids[i] = Prueba;
+                }
+                for(i = 0; i < result.getPropertyCount(); i++)
+                {
+                    Prueba = result.getProperty(i).toString();
+                    Prueba = Prueba.substring(Prueba.indexOf("namex=") + 6 , Prueba.indexOf(";", Prueba.indexOf("namex=")));
+                    Contacts[i] = Prueba;
+                }
+                for(i = 0; i < result.getPropertyCount(); i++)
+                {
+                    Prueba = result.getProperty(i).toString();
+                    Prueba = Prueba.substring(Prueba.indexOf("phone=") + 6 , Prueba.indexOf(";", Prueba.indexOf("phone=")));
+                    phoneNumbers[i] = Prueba;
+                }
+
+                ArrayAdapter<String> ContactsList = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, Contacts);
+                lvContacts.setAdapter(ContactsList);
+
+                lvContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        ConId = Ids[i];
+                        Intent Enter = new Intent (MainActivity.this, MessageActivity.class);
+                        startActivity(Enter);
+                    }
+                });
             }
         }
         catch(Exception e)

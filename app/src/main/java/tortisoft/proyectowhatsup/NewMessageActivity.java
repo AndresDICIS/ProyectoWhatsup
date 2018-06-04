@@ -30,7 +30,7 @@ public class NewMessageActivity extends Activity {
                 SoapObject request = new SoapObject("http://www.ugto.com/Whatsup", "SendMessagex");
                 request.addProperty("user_id", LoginActivity.userId);
                 request.addProperty("password", LoginActivity.Password);
-                request.addProperty("recipient_id", "3");
+                request.addProperty("recipient_id", MainActivity.ConId);
                 request.addProperty("content", Mensaje.getText().toString());
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
                 envelope.setOutputSoapObject(request);
@@ -44,7 +44,7 @@ public class NewMessageActivity extends Activity {
                     SoapObject result = (SoapObject)envelope.bodyIn;
                     if(result != null)
                     {
-                        Intent Enter = new Intent (NewMessageActivity.this, MainActivity.class);
+                        Intent Enter = new Intent (NewMessageActivity.this, MessageActivity.class);
                         startActivity(Enter);
                     }
                 }
