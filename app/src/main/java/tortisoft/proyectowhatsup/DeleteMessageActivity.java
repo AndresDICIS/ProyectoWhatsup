@@ -7,33 +7,34 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-public class AddContactActivity extends Activity {
+public class DeleteMessageActivity extends Activity {
 
-    Button Add;
+    static public String deleteMessageid;
+    Button Yes, No;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_contact);
+        setContentView(R.layout.activity_delete_message);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());
 
-        Add = (Button)findViewById(R.id.Add);
-        Add.setOnClickListener(new View.OnClickListener()
+        Yes = (Button)findViewById(R.id.Yes);
+        Yes.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
             public void onClick(View view) {
-                EditText inContact = (EditText)findViewById(R.id.inContact);
-                SoapObject request = new SoapObject("http://www.ugto.com/Whatsup", "AddContacto");
-                request.addProperty("phone", LoginActivity.Phone);
-                request.addProperty("Password", LoginActivity.Password);
-                request.addProperty("Contact_phone", inContact.getText().toString());
+                SoapObject request = new SoapObject("http://www.ugto.com/Whatsup", "DeleteMessage");
+                request.addProperty("userx_id", LoginActivity.userId);
+                request.addProperty("password", LoginActivity.Password);
+                request.addProperty("message_id", deleteMessageid);
                 SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
                 envelope.setOutputSoapObject(request);
                 envelope.dotNet = true;
@@ -42,18 +43,32 @@ public class AddContactActivity extends Activity {
                     HttpTransportSE httpTransport = new HttpTransportSE(LoginActivity.Ip);
                     httpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                     httpTransport.debug = true;
-                    httpTransport.call("AddContacto", envelope);
+                    httpTransport.call("DeleteMessage", envelope);
                     SoapObject result = (SoapObject)envelope.bodyIn;
                     if(result != null)
                     {
-                        Intent Enter = new Intent(AddContactActivity.this, MainActivity.class);
+                        Intent Enter = new Intent (DeleteMessageActivity.this, MessageActivity.class);
                         startActivity(Enter);
                     }
                 }
                 catch(Exception e)
                 {
-                    inContact.setText(e.toString());
+                    Toast advertencia = Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_SHORT );
+                    advertencia.show();
                 }
+                Intent Enter = new Intent (DeleteMessageActivity.this, MessageActivity.class);
+                startActivity(Enter);
+            }
+        });
+
+        No = (Button)findViewById(R.id.No);
+        No.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View view) {
+                Intent Enter = new Intent (DeleteMessageActivity.this, MessageActivity.class);
+                startActivity(Enter);
             }
         });
     }
