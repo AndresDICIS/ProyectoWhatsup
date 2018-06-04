@@ -22,6 +22,7 @@ public class LoginActivity extends Activity {
     public static String Password;
     public static String Name;
     public static String Phone;
+    public static String Ip = "http://10.70.68.11/WebService/WebService.dll";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class LoginActivity extends Activity {
             envelope.dotNet = true;
             try
             {
-                HttpTransportSE httpTransport = new HttpTransportSE("http://192.168.0.4/WebService/WebService.dll");
+                HttpTransportSE httpTransport = new HttpTransportSE(Ip);
                 httpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 httpTransport.debug = true;
                 httpTransport.call("Login", envelope);

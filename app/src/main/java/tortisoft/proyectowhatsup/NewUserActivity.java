@@ -41,7 +41,7 @@ public class NewUserActivity extends Activity {
                 envelope.dotNet = true;
                 try
                 {
-                    HttpTransportSE httpTransport = new HttpTransportSE("http://192.168.0.4/WebService/WebService.dll");
+                    HttpTransportSE httpTransport = new HttpTransportSE(LoginActivity.Ip);
                     httpTransport.setXmlVersionTag("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                     httpTransport.debug = true;
                     httpTransport.call("NewUser", envelope);
